@@ -115,20 +115,18 @@ def beenNew():
     return render_template('beenNew.html', title='New Been Post', form=form)
 
 
-@app.route('/beenPost/<city>', methods=['GET', 'POST'])
+@app.route('/beenPost/<id>', methods=['GET', 'POST'])
 @login_required
-def beenPost(city):
-    post = Post.query.filter_by(city=Post.City.name).filter_by(type=1)
-    user = current_user
-    return render_template('beenPost.html', title='Been Post', user=user, post=post)
+def beenPost(id):
+    post = Post.query.filter_by(id=id).first()
+    return render_template('beenPost.html', title='Been Post', user=current_user, post=post)
 
 
-@app.route('/wishPost/<city>', methods=['GET', 'POST'])
+@app.route('/wishPost/<id>', methods=['GET', 'POST'])
 @login_required
-def wishPost(city):
-    post = Post.query.filter_by(cityID=city.id).first()
-    user = current_user
-    return render_template('wishPost.html', title='Wish Post', user=user, post=post)
+def wishPost(id):
+    post = Post.query.filter_by(id=id).first()
+    return render_template('wishPost.html', title='Wish Post', user=current_user, post=post)
 
 
 @app.route('/wishList', methods=['GET', 'POST'])
