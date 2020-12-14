@@ -1,4 +1,5 @@
 {% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 
 {% block title %}
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block navbar %}
-<nav class="navbar navbar-default">
+<nav class="navbar sticky-top navbar-default">
         <div class="container">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -18,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">My Travel Scrapbook</a>
+            <a class="navbar-brand", align="center", href="{{ url_for('index') }}"><b>My Travel Scrapbook</b></a>
         </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -31,7 +32,7 @@
                      <a href="/wishList">Where I'm Going</a>
                 </li>
                 <li >
-                    <a class="nav-link" href="/explore">Explore</a>
+                    <a class="nav-link" href="/explore">Explore (WIP)</a>
                 </li>
             </ul>
 

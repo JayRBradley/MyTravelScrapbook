@@ -8,17 +8,19 @@ class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     countryID = db.Column(db.Integer, db.ForeignKey("country.id"))
     name = db.Column(db.String(64), index=True)
+    post = db.relationship("Post", backref="City", lazy="dynamic")
+
 
 class Country(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
-    city = db.relationship("city", backref="country", lazy="dynamic")
-
+    city = db.relationship("City", backref="Country", lazy="dynamic")
+    user = db.relationship("User", backref="Country", lazy="dynamic")
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(64), index=True, unique=True)
-    blog = db.Column(db.String(64), index=True, unique=True)
+    type = db.Column(db.String(64))
+    blog = db.Column(db.String(64), index=True)
     StartDate = db.Column(db.DateTime())
     EndDate = db.Column(db.DateTime())
     cityID = db.Column(db.Integer, db.ForeignKey('city.id'), nullable=False)
@@ -31,7 +33,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     countryID = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
-    post = db.relationship('post', backref='user', lazy='dynamic')
+    post = db.relationship('Post', backref='User', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

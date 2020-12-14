@@ -1,77 +1,32 @@
-{% extends 'bootstrap/base.html' %}
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
+{% block app_content %}
+<div class="container-fluid">
+<div class = "row", >
 
-{% block title %}
-        {% if title %}
-       {{ title }} - My Travel Scrapbook
-        {% else %}
-        My Travel Scrapbook
-        {% endif %}
-{% endblock %}
+            <div class = "col-sm-4 col-lg-12">
+              <h1 class="text-center" style="background-color: #e5ad55;"> Places I've Been</h1>
+                    {% for post in posts %}
+                        <div class="card text-center" style="width:200px;float:left;">
+                            <div class="card-body" style="background-color: dodgerblue;">
+                                <h3 class="card-title text-center"><b>{{post.City.name}}</b></h3>
+                                <p class="card-text text-center">{{post.blog}}</p>
 
-{% block navbar %}
-<nav class="navbar navbar-default">
-        <div class="container">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">My Travel Scrapbook</a>
-        </div>
-
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-                <ul class="nav navbar-nav">
-                <li>
-                    <a  href="/index"> Local Music </a>
-                </li>
-                <li>
-                     <a href="/artists">Artists</a>
-                </li>
-                <li >
-                    <a class="nav-link" href="/new_artists">New Artists</a>
-                </li>
-                <li>
-                      <a  href="/new_event">New Event</a>
-                </li>
-                <li>
-                    <a href="/new_venue">New Venue</a>
-                </li>
-                    <li>
-                    <a href="/xxx">Broken Link</a>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-
-                  <li class="nav-item">
-                        {% if current_user.is_anonymous %}
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        {% else %}
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                        {% endif %}
-                  </li>
-            </ul>
-
-        </div>
-        <!-- ^^collapse -->
-
-</nav>
-{% endblock %}
-
-{% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
+                                    <a href="beenPost.html/{{post.City.name}}" class="btn btn-primary">See More...</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
     </div>
+</div>
+
+<div class="container">
+    <div class = "row">
+        <div class = "col-sm-4">
+            <h3><a href="/beenNew">Add New Post</a></h3>
+            </div>
+    </div>
+</div>
+
 {% endblock %}

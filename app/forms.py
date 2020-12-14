@@ -18,6 +18,7 @@ class LoginForm(FlaskForm):
 class CreateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired()])
+    country = StringField('Country', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -35,42 +36,47 @@ class CreateAccountForm(FlaskForm):
 
 class NewWish(FlaskForm):
     country = StringField('Country', validators=[DataRequired()])
-    city = StringField('City')
-    blog = TextAreaField('Blog Post', validators=[DataRequired()])
-    startDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
-    endDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    city = StringField('City', validators=[DataRequired()])
+    blog = TextAreaField('Dream Trip', validators=[DataRequired()])
+    startDate = DateTimeField('Start Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    endDate = DateTimeField('End Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    submit = SubmitField('Add Trip')
+
+'''
     image = MultipleFileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])
     def validate_image(form, field):
         if field.data:
             field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
-
-    submit = SubmitField('Add Trip')
-
+'''
+'''
     def upload(request):
         form = NewWish(request.POST)
         if form.image.data:
             image_data = request.FILES[form.image.name].read()
             open(os.path.join('app/images', form.image.data), 'w').write(image_data)
-
+'''
 
 
 class NewBeen(FlaskForm):
     country = StringField('Country', validators=[DataRequired()])
-    city = StringField('City')
+    city = StringField('City', validators=[DataRequired()])
     blog = TextAreaField('Blog Post', validators=[DataRequired()])
-    startDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
-    endDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    startDate = DateTimeField('Start Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    endDate = DateTimeField('End Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    submit = SubmitField('Add Trip')
+
+    '''
     image = MultipleFileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])
 
     def validate_image(form, field):
         if field.data:
             field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
-
-    submit = SubmitField('Add Trip')
-
+'''
+    '''
     def upload(request):
         form = NewBeen(request.POST)
         if form.image.data:
             image_data = request.FILES[form.image.name].read()
             open(os.path.join('app/images', form.image.data), 'w').write(image_data)
 
+'''

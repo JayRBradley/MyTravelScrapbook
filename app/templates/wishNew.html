@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content%}
-    <h1>Enter Future Location</h1>
+{% block app_content %}
+    <h1>Enter a Dream Location</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
@@ -9,16 +10,20 @@
             {{ form.country(size=32) }}
         </p>
         <p>
-            {{ form.state.label }}
-            {{ form.state(size=32) }}
-        </p>
-        <p>
             {{ form.city.label }}
             {{ form.city(size=32) }}
         </p>
         <p>
-            {{ form.description.label }}
-            {{ form.description() }}
+            {{ form.blog.label }}
+            {{ form.blog() }}
+        </p>
+         <p>
+            {{ form.startDate.label }}
+            {{ form.startDate() }}
+        </p>
+         <p>
+            {{ form.endDate.label }}
+            {{ form.endDate() }}
         </p>
         <p>{{ form.submit() }}</p>
     </form>

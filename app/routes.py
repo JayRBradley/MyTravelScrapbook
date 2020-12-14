@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm, CreateAccountForm, NewWish, NewBeen
-from app.models import Post, User, City, State, Country
+from app.models import Post, User, City, Country
 from flask_login import current_user, login_user, logout_user, login_manager
 from app.models import User
 from flask_login import login_required
@@ -13,14 +13,9 @@ import string
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
-    '''posts = [
-        {
-            'author': {'username': 'Quail'},
-            'body': 'New Music Soon!'
-        }]'''
-    return render_template('index.html', title='Home')
+    posts = Post.query.filter_by(type=1)
+    return render_template('index.html', title='Home', User=current_user, posts=posts)
 
 
 @app.route('/login', methods=('GET', 'POST'))
@@ -54,11 +49,19 @@ def create_user():
             flash('User Already Exists')
         else:
             flash("New User {} Created!".format(form.username.data))
-            u1 = User(username=form.username.data, email=form.email.data)
+            country = form.country.data
+            country = string.capwords(country)
+            if Country.query.filter_by(name=form.country.data).first() is not None:
+                c = country.query.filter_by(name=form.country.data).first()
+            else:
+                c = Country(name=form.country.data)
+                db.session.add(c)
+                db.session.commit()
+            u1 = User(username=form.username.data, email=form.email.data, countryID=c.id)
             u1.set_password(form.password.data)
             db.session.add(u1)
             db.session.commit()
-            return redirect('/index')
+        return redirect('/login')
 
     return render_template('create_user.html', title="Create User", form=form)
 
@@ -71,8 +74,8 @@ def logout():
 @app.route('/beenList', methods=['GET', 'POST'])
 @login_required
 def beenList():
-   # posts
-    return render_template('beenList.html', title='Artist Page', artist=artist, events=events)
+    posts = Post.query.filter_by(type=1)
+    return render_template('beenList.html', title='Been List', User=current_user, posts=posts)
 
 
 @app.route('/beenNew', methods=['GET', 'POST'])
@@ -88,11 +91,10 @@ def beenNew():
 
         country = form.country.data
         country = string.capwords(country)
-        if country.query.filter_by(name=form.country.data).first() is not None:
-            c = country.query.filter_by(name=form.country.data).first()
+        if Country.query.filter_by(name=form.country.data).first() is not None:
+            c = Country.query.filter_by(name=form.country.data).first()
         else:
-            country = country(name=form.town.data)
-            c = Country(name=country)
+            c = Country(name=form.country.data)
             db.session.add(c)
             db.session.commit()
         city = form.city.data
@@ -113,10 +115,65 @@ def beenNew():
     return render_template('beenNew.html', title='New Been Post', form=form)
 
 
-@app.route('/beenList/<cityID>', methods=['GET', 'POST'])
+@app.route('/beenPost/<city>', methods=['GET', 'POST'])
 @login_required
-def beenPost():
-    return render_template('beenPost.html', title='Artist Page')
+def beenPost(city):
+    post = Post.query.filter_by(city=Post.City.name).filter_by(type=1)
+    user = current_user
+    return render_template('beenPost.html', title='Been Post', user=user, post=post)
+
+
+@app.route('/wishPost/<city>', methods=['GET', 'POST'])
+@login_required
+def wishPost(city):
+    post = Post.query.filter_by(cityID=city.id).first()
+    user = current_user
+    return render_template('wishPost.html', title='Wish Post', user=user, post=post)
+
+
+@app.route('/wishList', methods=['GET', 'POST'])
+@login_required
+def wishList():
+    posts = Post.query.filter_by(type=2)
+    return render_template('wishList.html', title='Wish List', User=current_user, post=posts)
+
+
+@app.route('/wishNew', methods=['GET', 'POST'])
+@login_required
+def wishNew():
+    form = NewWish()
+    if form.validate_on_submit():
+        type = 2
+        blog = form.blog.data
+        startDate = form.startDate.data
+        endDate = form.endDate.data
+        user = current_user.id
+
+        country = form.country.data
+        country = string.capwords(country)
+        if Country.query.filter_by(name=form.country.data).first() is not None:
+            c = Country.query.filter_by(name=form.country.data).first()
+        else:
+            c = Country(name=form.country.data)
+            db.session.add(c)
+            db.session.commit()
+        city = form.city.data
+        city = string.capwords(city)
+        if City.query.filter_by(name=form.country.data).first() is not None:
+            city1 = City.query.filter_by(name=form.country.data).first()
+        else:
+            city1 = City(name=city, countryID=c.id)
+            db.session.add(city1)
+            db.session.commit()
+
+        p = Post(type=type, blog=blog, StartDate=startDate, EndDate=endDate, cityID=city1.id, userID=user)
+        db.session.add(p)
+        db.session.commit()
+        flash('Blog Posted')
+        return redirect('/wishList')
+    return render_template('wishNew.html', title='New Wish Post', form=form)
+
+
 
 
 @app.route('/explore', methods=['GET', 'POST'])
@@ -135,51 +192,3 @@ def photoAlbum():
 def spotHighlight():
     return render_template('spot-highlight.html', title='Trip Highlight')
 
-
-@app.route('/wishList', methods=['GET', 'POST'])
-@login_required
-def wishList():
-    return render_template('WishList.html', title='Wish List')
-
-
-@app.route('/wishNew', methods=['GET', 'POST'])
-@login_required
-def wishNew():
-    form = NewWish()
-    if form.validate_on_submit():
-        type = 2
-        blog = form.blog.data
-        startDate = form.startDate.data
-        endDate = form.endDate.data
-        user = current_user.id
-
-        country = form.country.data
-        country = string.capwords(country)
-        if country.query.filter_by(name=form.country.data).first() is not None:
-            c = country.query.filter_by(name=form.country.data).first()
-        else:
-            country = country(name=form.town.data)
-            c = Country(name=country)
-            db.session.add(c)
-            db.session.commit()
-        city = form.city.data
-        city = string.capwords(city)
-        if City.query.filter_by(name=form.country.data).first() is not None:
-            city1 = City.query.filter_by(name=form.country.data).first()
-        else:
-            city1 = City(name=city, countryID=c.id)
-            db.session.add(city1)
-            db.session.commit()
-
-        p = Post(type=type, blog=blog, StartDate=startDate, EndDate=endDate, cityID=city1.id, userID=user)
-        db.session.add(p)
-        db.session.commit()
-        flash('Blog Posted')
-        return redirect('/beenList')
-    return render_template('wishNew.html', title='New Wish Post', form=form)
-
-
-@app.route('/wishPost', methods=['GET', 'POST'])
-@login_required
-def wishPost():
-    return render_template('wishPost.html', title='Wish Post')

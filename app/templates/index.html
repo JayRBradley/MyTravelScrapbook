@@ -1,9 +1,44 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-<h1>"Where You've Been and Where You're Going"</h1>
 
-<h3>My Travel Scrapbook allows you to log and share your past and future travel plans.
-Share your most exciting experiences from your latest trip, or see how others enjoy traveling to plan your next adventure!</h3>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-8 border">
+            <h1 class='text-center'>"Where You've Been and Where You're Going"</h1>
+        </div>
+
+        <div class="col-4 border">
+            <p>
+            <h3 class="text-center">My Travel Scrapbook allows you to log and share your past and future travel plans.
+                Share your most exciting experiences from your latest trip, or see how others enjoy traveling to plan
+                your next adventure!</h3>
+            </p>
+        </div>
+
+    </div>
+    <br>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <h3><ul>
+                <li><a href="beenList.html">Log Your Travels</a></li>
+                <li><a href="beenList.html">Plan Your Future Trips</a></li>
+                <li><a href="explore.html">Explore Where Others Have Gone</a></li>
+
+            </ul></h3>
+
+    </div>
+    <br>
+</div>
+</div>
+
 
 {% endblock %}
