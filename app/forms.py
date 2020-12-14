@@ -1,8 +1,11 @@
-from flask_wtf import FlaskForm
+import os
+from typing import re
+
+from flask_wtf import FlaskForm, validators
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField, \
-    SelectMultipleField
+    SelectMultipleField, FileField, MultipleFileField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
-from app.models import User, Venue, City, Artist
+from app.models import User, City, Country, Post
 from wtforms.fields.html5 import DateField, DateTimeField
 
 
@@ -30,24 +33,44 @@ class CreateAccountForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
-class AddNewArtistForm(FlaskForm):
-    new_artist = StringField('Artist Name', validators=[DataRequired()])
-    town = StringField('Hometown')
-    description = TextAreaField('Description', validators=[DataRequired()])
-    submit = SubmitField('Add Artist')
+class NewWish(FlaskForm):
+    country = StringField('Country', validators=[DataRequired()])
+    city = StringField('City')
+    blog = TextAreaField('Blog Post', validators=[DataRequired()])
+    startDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    endDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    image = MultipleFileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])
+    def validate_image(form, field):
+        if field.data:
+            field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
+
+    submit = SubmitField('Add Trip')
+
+    def upload(request):
+        form = NewWish(request.POST)
+        if form.image.data:
+            image_data = request.FILES[form.image.name].read()
+            open(os.path.join('app/images', form.image.data), 'w').write(image_data)
 
 
-class AddNewVenueForm(FlaskForm):
-    venue = StringField('Venue Name', validators=[DataRequired()])
-    #LIST TOWN
-    city = SelectField(u'Venue Location', coerce=int)
-    submit = SubmitField('Add Venue')
 
+class NewBeen(FlaskForm):
+    country = StringField('Country', validators=[DataRequired()])
+    city = StringField('City')
+    blog = TextAreaField('Blog Post', validators=[DataRequired()])
+    startDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    endDate = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
+    image = MultipleFileField(u'Image File', [validators.regexp(u'^[^/\\]\.jpg$')])
 
-class AddEventForm(FlaskForm):
-    event = StringField('Event Name', validators=[DataRequired()])
-    time = DateTimeField('Date (MM-DD-YYYY)', format='%m-%d-%Y')
-    #LIST VENUES
-    venue = SelectField(u'Venue', coerce=int)
-    artists = SelectMultipleField(u'Artist(s)', coerce=int)
-    submit = SubmitField('Add Event')
+    def validate_image(form, field):
+        if field.data:
+            field.data = re.sub(r'[^a-z0-9_.-]', '_', field.data)
+
+    submit = SubmitField('Add Trip')
+
+    def upload(request):
+        form = NewBeen(request.POST)
+        if form.image.data:
+            image_data = request.FILES[form.image.name].read()
+            open(os.path.join('app/images', form.image.data), 'w').write(image_data)
+
