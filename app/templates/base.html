@@ -3,69 +3,73 @@
 
 
 {% block title %}
-        {% if title %}
-       {{ title }} - MyTravelScrapbook
-        {% else %}
-        MyTravelScrapbook
-        {% endif %}
+{% if title %}
+{{ title }} - MyTravelScrapbook
+{% else %}
+MyTravelScrapbook
+{% endif %}
 {% endblock %}
 
 {% block navbar %}
-<nav class="navbar sticky-top navbar-default">
+<section style="background-color:#b1a3af">
+
+    <nav class="navbar sticky-top navbar-default bg-light">
         <div class="container">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            <a class="navbar-brand", align="center", href="{{ url_for('index') }}"><b>My Travel Scrapbook</b></a>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand text-center", href="{{ url_for('index') }}"><b>My Travel Scrapbook</b></a>
         </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-                <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li>
-                    <a  href="/beenList"> Where I've Been </a>
+                    <a href="/beenList"> Where You've Been </a>
                 </li>
                 <li>
-                     <a href="/wishList">Where I'm Going</a>
+                    <a href="/wishList">Where You're Going</a>
                 </li>
-                <li >
-                    <a class="nav-link" href="/explore">Explore (WIP)</a>
+                <li>
+                    <a class="nav-link" href="/explore">Explore</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
 
-                  <li class="nav-item">
-                        {% if current_user.is_anonymous %}
-                            <a class="nav-link" href="{{ url_for('login') }}">Login/Sign Up</a>
-                        {% else %}
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                        {% endif %}
-                  </li>
+                <li class="nav-item">
+                    {% if current_user.is_anonymous %}
+                    <a class="nav-link" href="{{ url_for('login') }}">Login/Sign Up</a>
+                    {% else %}
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    {% endif %}
+                </li>
             </ul>
 
         </div>
         <!-- ^^collapse -->
 
-</nav>
+    </nav>
+</section>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-info" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-        {# application content needs to be provided in the app_content block #}
-        {% block app_content %}{% endblock %}
-    </div>
+    {# application content needs to be provided in the app_content block #}
+    {% block app_content %}{% endblock %}
+</div>
 {% endblock %}
 
 

@@ -52,7 +52,7 @@ def create_user():
             country = form.country.data
             country = string.capwords(country)
             if Country.query.filter_by(name=form.country.data).first() is not None:
-                c = country.query.filter_by(name=form.country.data).first()
+                c =Country.query.filter_by(name=form.country.data).first()
             else:
                 c = Country(name=form.country.data)
                 db.session.add(c)
@@ -74,8 +74,8 @@ def logout():
 @app.route('/beenList', methods=['GET', 'POST'])
 @login_required
 def beenList():
-    posts = Post.query.filter_by(type=1)
-    return render_template('beenList.html', title='Been List', User=current_user, posts=posts)
+    posts = Post.query.filter_by(type=1,userID=current_user.id)
+    return render_template('beenList.html', title='Been List', user=current_user, posts=posts)
 
 
 @app.route('/beenNew', methods=['GET', 'POST'])
@@ -132,8 +132,8 @@ def wishPost(id):
 @app.route('/wishList', methods=['GET', 'POST'])
 @login_required
 def wishList():
-    posts = Post.query.filter_by(type=2)
-    return render_template('wishList.html', title='Wish List', User=current_user, post=posts)
+    posts = Post.query.filter_by(type=2, userID=current_user.id)
+    return render_template('wishList.html', title='Wish List', user=current_user, post=posts)
 
 
 @app.route('/wishNew', methods=['GET', 'POST'])
@@ -176,7 +176,8 @@ def wishNew():
 
 @app.route('/explore', methods=['GET', 'POST'])
 def explore():
-    return render_template('explore.html', title='Explore')
+    posts = Post.query.filter_by(type=1)
+    return render_template('explore.html', title='Explore', User=current_user, posts=posts)
 
 
 @app.route('/photo-album', methods=['GET', 'POST'])

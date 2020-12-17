@@ -2,10 +2,10 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>{{user.username}}'s Dream Trip to {{post.City.name}}, {{post.City.Country.name}}</h1>
-    <hr>
-    <h4>{{post.StartDate}} to {{post.EndDate}}</h4>
+<h1>{{user.username}}'s Dream Trip to {{post.City.name}}, {{post.City.Country.name}}</h1>
 <hr>
-    <p>{{post.blog}}</p>
+<h4>{{post.StartDate}} to {{post.EndDate}}</h4>
+<hr>
+<p>{{post.blog}}</p>
 
 {% endblock %}

@@ -1,31 +1,39 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block app_content %}
-<div class="container-fluid">
-<div class = "row", >
-
-            <div class = "col-sm-4 col-lg-12">
-              <h1 class="text-center" style="background-color: #e5ad55;"> Places I've Been</h1>
-                    {% for post in posts %}
-                        <div class="card text-center" style="width:200px;float:left;">
-                            <div class="card-body" style="background-color: dodgerblue;">
-                                <h3 class="card-title text-center"><b>{{post.City.name}}</b></h3>
-                                <p class="card-text text-center">{{post.blog}}</p>
-
-                                    <a href="beenPost/{{post.id}}" class="btn btn-primary">See More...</a>
-                            </div>
-                        </div>
-                    {% endfor %}
+{% block content %}
+<section style="background:#ffb3b3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center"><b> {{user.username}}'s Travel Log</b></h1>
             </div>
+        </div>
+    </div>
+</section>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4 col-lg-12">
+            {% for post in posts %}
+            <div class="card text-center" style="float:left;height:300px">
+                <div class="card-body table-bordered container-fluid" style="background-color: dodgerblue; border-width:2px;border-color:black">
+                    <h3 class="card-title text-center"><b>{{post.City.name}}</b></h3>
+                    <p class="card-text text-center">{{post.blog}}</p>
+
+                    <a href="beenPost/{{post.id}}" class="btn btn-primary">See More...</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
 <div class="container">
-    <div class = "row">
-        <div class = "col-sm-4">
+    <div class="row">
+        <div class="col-sm-4">
             <h3><a href="/beenNew">Add New Post</a></h3>
-            </div>
+        </div>
     </div>
 </div>
 

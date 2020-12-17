@@ -1,6 +1,44 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block app_content %}
 
-<h1 class="text-center" style="color: mediumblue">Coming Soon</h1>
+{% block content %}
+<h1 class="text-center" style="color: mediumblue">Images and More Coming Soon</h1>
+
+<div container-fluid>
+    <div row>
+        <div class="col-4 border">
+            <p>
+            <h3 class="text-center">A view into other users' posts. Read about travelling the world to plan your own
+                adventure.</h3>
+            </p>
+        </div>
+    </div>
+</div>
+
+<section style="background:#ffb3b3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center"><b>Places Users Have Been</b></h1>
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10">
+                {% for post in posts %}
+            <div class="card text-center" style="height:300px;float:left;">
+                <div class="card-body table-bordered container-fluid" style="background-color: coral;border-width:2px;border-color:black">
+                    <h3 class="card-title text-center"><b>{{post.City.name}}</b></h3>
+                    <p class="card-text text-center">{{post.blog}}</p>
+                    <a href="beenPost/{{post.id}}" class="btn btn-primary">See More...</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

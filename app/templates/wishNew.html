@@ -2,29 +2,41 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <h1>Enter a Dream Location</h1>
+<h1 class="text-center">Enter a Dream Location</h1>
+<div class="center-block container-fluid">
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
-            {{ form.country.label }}
+            {{ form.country.label }} </p>
+
+        <p>
             {{ form.country(size=32) }}
         </p>
         <p>
-            {{ form.city.label }}
+            {{ form.city.label }} </p>
+
+        <p>
             {{ form.city(size=32) }}
         </p>
         <p>
-            {{ form.blog.label }}
+            {{ form.blog.label }} </p>
+
+        <p>
             {{ form.blog() }}
         </p>
-         <p>
-            {{ form.startDate.label }}
+        <p>
+            {{ form.startDate.label }} </p>
+
+        <p>
             {{ form.startDate() }}
         </p>
-         <p>
-            {{ form.endDate.label }}
+        <p>
+            {{ form.endDate.label }} </p>
+
+        <p>
             {{ form.endDate() }}
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+</div>
 {% endblock %}

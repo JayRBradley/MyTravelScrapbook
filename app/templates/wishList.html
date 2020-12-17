@@ -1,31 +1,41 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block app_content %}
-<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
-<div class = "row" >
-            <div class = "col-sm-4 col-lg-12">
 
-         <h1 style="background-color: lightgreen;" class="text-center">Places To Go</h1>
-                <div class="card">
-                    {% for posts in post %}
-                        <div class="card" style="width:200px;float:left;">
-                        <div class="card-body  text-center" style="background-color:#2de7e7;">
-                                <h3 class="card-title text-center">{{posts.City.name}}</h3>
-                                    <p class="card-text text-center">{{posts.blog}}</p>
-                            <a href="wishPost/{{posts.id}}" class="btn btn-primary">See More...</a></span>
-                            </div>
-                        </div>
-                    {% endfor %}
-            </div>
+{% block content %}
+<section style="background:#ffb3b3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center"><b>{{user.username}}'s Travel Wishlist</b></h1>
             </div>
         </div>
+    </div>
+</section>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4 col-lg-12">
+            <div class="card">
+                {% for posts in post %}
+                <div class="card" style="width:200px;height:300px;float:left;">
+                    <div class="card-body table-bordered text-center container-fluid" style="background-color:#2de7e7;border-width:2px;border-color:black"">
+                        <h3 class="card-title text-center">{{posts.City.name}}</h3>
+                        <p class="card-text text-center">{{posts.blog}}</p>
+                        <a href="wishPost/{{posts.id}}" class="btn btn-primary">See More...</a></span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 <div class="container">
-    <div class = "row">
-        <div class = "col-sm-4">
+    <div class="row">
+        <div class="col-sm-4">
             <h3><a href="/wishNew">Add New Post</a></h3>
-            </div>
+        </div>
     </div>
 </div>
 
