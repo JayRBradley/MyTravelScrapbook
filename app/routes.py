@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm, CreateAccountForm, NewWish, NewBeen
@@ -9,7 +8,7 @@ from flask_login import login_required
 from flask import request
 from werkzeug.urls import url_parse
 from app import db
-import string
+import string, random
 
 @app.route('/')
 @app.route('/index')
@@ -119,7 +118,9 @@ def beenNew():
 @login_required
 def beenPost(id):
     post = Post.query.filter_by(id=id).first()
-    return render_template('beenPost.html', title='Been Post', user=current_user, post=post)
+    user = post.userID
+    user = User.query.filter_by(id=user).first()
+    return render_template('beenPost.html', title='Been Post', user=user, post=post)
 
 
 @app.route('/wishPost/<id>', methods=['GET', 'POST'])
